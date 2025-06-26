@@ -1,0 +1,12 @@
+<configuration>
+<property>
+<name>hadoop.security.auth_to_local</name>
+<value>
+RULE:[1:$1@$0](.*@\QBD.COMPANY.PRI\E$)s/@\QBD.COMPANY.PRI\E$//
+RULE:[2:$1@$0](.*@\QBD.COMPANY.PRI\E$)s/@\QBD.COMPANY.PRI\E$//
+RULE:[1:$1@$0](.*@\QCOMPANY.PRI\E$)s/@\QCOMPANY.PRI\E$//
+RULE:[2:$1@$0](.*@\QCOMPANY.PRI\E$)s/@\QCOMPANY.PRI\E$//
+DEFAULT
+</value>
+</property>
+</configuration>
