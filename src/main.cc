@@ -69,13 +69,18 @@ int main(int argc, char **argv){
   basic_token_test();
   auto rule = parse_rule("RULE:[2:$1@$0](spark-rangerkerberos@ADSRE.COM)s/.*/spark/   ");
   auto rule_one_part = parse_rule(R"(RULE:[1:$1@$0](spark-rangerkerberos@ADSRE.COM)s/.*/spark/)");
-  
+  auto java_rule = parse_rule(R"(RULE:[2:$1@$0](.*@\QCOMPANY.PRI\E$)s/@\QCOMPANY.PRI\E$//)");
   std::string out = "";
   assert(rule_one_part.has_value());
   assert(rule_one_part.value().num_fields == 1);
   transformPrincipal(rule_one_part.value(), "spark-rangerkerberos@ADSRE.COM", out);
   
   assert(out == "spark");
+  assert(java_rule.has_value());
+  assert(java_rule.value().num_fields == 2);
+  out = "";
+  transformPrincipal(java_rule.value(), "mzeoli/whateverhost@COMPANY.PRI", out);
+  assert(out == "mzeoli");
   auto default_rule = parse_rule("DEFAULT");
   assert(default_rule.has_value());
 

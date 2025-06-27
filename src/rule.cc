@@ -24,8 +24,8 @@ std::string process_java_regex_literals(const std::string& input) {
             i += 2;
             size_t end = input.find("\\E", i);
             if (end == std::string::npos) {
-                // Unterminated \Q, treat the rest as literal
-                output += escape_regex_literal(input.substr(i));
+                std::cerr << "Unterminated \\Q -- expected \\E, couldn't find it\n";
+                throw std::runtime_error("Unterminated \\Q in regex literal");
                 break;
             } else {
                 output += escape_regex_literal(input.substr(i, end - i));
@@ -95,7 +95,7 @@ std::optional<SedRule> parse_sed_rule(const std::string& sed_rule) {
     return SedRule{part[0], part[1], flags};
 }
 
-std::string removeEscape(const std::string& input) {
+/*std::string removeEscape(const std::string& input) {
     std::string result;
     bool escape = false;
     for (char c : input) {
@@ -109,7 +109,7 @@ std::string removeEscape(const std::string& input) {
         }
     }
     return result;
-}
+}*/
 
 std::string trim(const std::string& str) {
     
@@ -204,8 +204,10 @@ parse_auth_to_local(const std::string &rule){
   }
   return std::make_tuple(
     trim(number), 
-    removeEscape(trim(format)), 
-    removeEscape(trim(regex_match)), 
+    trim(format),
+    trim(regex_match),
+    //removeEscape(trim(format)), 
+    //removeEscape(trim(regex_match)), 
     trim(sed_rule));
 }
 
